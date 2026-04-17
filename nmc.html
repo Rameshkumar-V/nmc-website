@@ -58,20 +58,40 @@
     .stat-num { font-variant-numeric: tabular-nums; }
 
     /* Dropdown — desktop hover only */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      z-index: 9999;
-    }
-    .dropdown:hover > .dropdown-menu {
-      display: block;
-    }
-    /* Prevent dropdown closing when moving mouse into it */
-    .dropdown-menu:hover {
-      display: block;
-    }
+    /* ===== FIX HEADER DESKTOP DROPDOWN NAVS ONLY ===== */
+/* Replace only your existing dropdown CSS in header */
+
+.dropdown{
+  position: relative;
+}
+
+.dropdown-menu{
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.22s ease;
+}
+
+/* Show only on hover */
+.dropdown:hover > .dropdown-menu{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Keep menu open while mouse inside */
+.dropdown-menu:hover{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
 
     /* Mobile menu */
     #mobile-menu { max-height:0; overflow:hidden; transition: max-height .4s ease; }
