@@ -57,9 +57,41 @@
     /* Stat counter */
     .stat-num { font-variant-numeric: tabular-nums; }
 
-    /* Dropdown slide */
-    .dropdown-menu { display:none; }
-    .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { display:block; }
+    /* Dropdown — desktop hover only */
+    /* ===== FIX HEADER DESKTOP DROPDOWN NAVS ONLY ===== */
+/* Replace only your existing dropdown CSS in header */
+
+.dropdown{
+  position: relative;
+}
+
+.dropdown-menu{
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.22s ease;
+}
+
+/* Show only on hover */
+.dropdown:hover > .dropdown-menu{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Keep menu open while mouse inside */
+.dropdown-menu:hover{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
 
     /* Mobile menu */
     #mobile-menu { max-height:0; overflow:hidden; transition: max-height .4s ease; }
@@ -1467,6 +1499,15 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+  // ---- Desktop dropdowns: close on outside click ----
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = '');
+    }
+  });
+  // Ensure no dropdown is open on page load
+  document.querySelectorAll('.dropdown-menu').forEach(m => { m.style.display = ''; });
 
   // ---- Navbar scroll ----
   window.addEventListener('scroll', () => {
