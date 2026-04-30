@@ -57,9 +57,41 @@
     /* Stat counter */
     .stat-num { font-variant-numeric: tabular-nums; }
 
-    /* Dropdown slide */
-    .dropdown-menu { display:none; }
-    .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu { display:block; }
+    /* Dropdown — desktop hover only */
+    /* ===== FIX HEADER DESKTOP DROPDOWN NAVS ONLY ===== */
+/* Replace only your existing dropdown CSS in header */
+
+.dropdown{
+  position: relative;
+}
+
+.dropdown-menu{
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.22s ease;
+}
+
+/* Show only on hover */
+.dropdown:hover > .dropdown-menu{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Keep menu open while mouse inside */
+.dropdown-menu:hover{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
 
     /* Mobile menu */
     #mobile-menu { max-height:0; overflow:hidden; transition: max-height .4s ease; }
@@ -129,10 +161,14 @@
 
     <!-- Logo + Name: single logo on desktop, no duplicate -->
     <a href="https://nmc.ac.in" class="flex items-center gap-3 min-w-0" aria-label="Nehru Memorial College Home">
-      <img src="https://nmc.ac.in/images/logo34.png" alt="NMC – Nehru Memorial College Logo" class="h-11 w-auto object-contain" loading="eager" onerror="this.style.display='none'" />
-      <div class="hidden sm:block">
-        <div class="font-display font-bold text-navy-900 text-sm leading-tight">Nehru Memorial College</div>
-        <div class="text-gray-500 text-xs">Autonomous · Aided · Est. 1967</div>
+      <img src="https://nmc.ac.in/images/nmclogos/logo1-bgremoved.png" alt="NMC – Nehru Memorial College Logo" class="h-12 w-auto object-contain bg-white loading="eager" onerror="this.style.display='none'" />
+      <div class="block">
+        <center>
+        <div class="font-display font-bold text-navy-900 text-sm leading-tight md:text-xs">Nehru Memorial College (Autonomous)</div>
+        <div class="text-gray-500 text-xs">
+          <small>·  Affiliated to Bharathidhasan University</small> 
+        </div>
+        </center>
       </div>
     </a>
 
@@ -416,10 +452,14 @@
   <div class="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 text-center">
 
     <!-- Accreditation pill -->
-    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/25 rounded-full px-5 py-2 mb-8 text-gold-300 text-sm font-semibold tracking-wide shadow-lg"
+    <div class="inline-flex items-center gap-2 bg-navy-950/70 backdrop-blur-md border border-gold-400/60 rounded-full px-5 py-2 mb-8 text-white text-sm font-semibold tracking-wide shadow-xl"
          style="animation:fadeSlideUp .7s ease forwards;opacity:0;animation-delay:.1s">
-      <i class="fa-solid fa-award text-gold-400 text-xs"></i>
-      NAAC A+ Accredited &nbsp;&middot;&nbsp; NIRF Ranked 101–150 &nbsp;&middot;&nbsp; Est. 1967
+      <i class="fa-solid fa-award text-gold-400"></i>
+      <span>NAAC <strong class="text-gold-400">A+</strong> Accredited</span>
+      <span class="text-gold-400 mx-1">·</span>
+      <span>NIRF Ranked <strong class="text-gold-400">101–150</strong></span>
+      <span class="text-gold-400 mx-1">·</span>
+      <span>Est. <strong class="text-gold-400">1967</strong></span>
     </div>
 
     <!-- College name -->
@@ -437,11 +477,11 @@
     </p>
 
     <!-- Quote box -->
-    <div class="inline-flex items-center gap-2.5 bg-black/25 backdrop-blur-sm border border-gold-400/30 rounded-2xl px-6 py-3 mb-10 shadow"
+    <div class="inline-flex items-center gap-3 bg-navy-950/80 backdrop-blur-md border-l-4 border-l-gold-400 border border-gold-400/20 rounded-2xl px-6 py-4 mb-10 shadow-xl"
          style="animation:fadeSlideUp .7s ease forwards;opacity:0;animation-delay:.55s">
-      <i class="fa-solid fa-quote-left text-gold-400 text-xs shrink-0"></i>
-      <p class="text-gold-200 font-semibold text-sm md:text-base italic">
-        The First College in India to Introduce Computer Science
+      <i class="fa-solid fa-quote-left text-gold-400 text-base shrink-0"></i>
+      <p class="text-white font-semibold text-sm md:text-base italic leading-snug">
+        The First College in India to Introduce <span class="text-gold-400 not-italic font-bold">Computer Science</span>
       </p>
     </div>
 
@@ -1463,6 +1503,15 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+  // ---- Desktop dropdowns: close on outside click ----
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = '');
+    }
+  });
+  // Ensure no dropdown is open on page load
+  document.querySelectorAll('.dropdown-menu').forEach(m => { m.style.display = ''; });
 
   // ---- Navbar scroll ----
   window.addEventListener('scroll', () => {
